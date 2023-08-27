@@ -33,7 +33,7 @@ public class ShopsTest {
         if (isRemote) {
             DesiredCapabilities capabilities = new DesiredCapabilities();
             capabilities.setBrowserName("chrome");
-            capabilities.setCapability("enableVNC:", true);
+            capabilities.setCapability("enableVNC", true);
             WebDriver driver = new RemoteWebDriver(URI.create("http://localhost:4000").toURL(), capabilities);
             setWebDriver(driver);
         } else {
