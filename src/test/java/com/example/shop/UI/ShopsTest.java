@@ -1,16 +1,23 @@
 package com.example.shop.UI;
 
+import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.WebDriverRunner;
 import com.example.shop.api.Steps;
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.*;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.WebDriverRunner.setWebDriver;
 
 @DisplayName("UI-тесты")
 public class ShopsTest {
@@ -18,10 +25,20 @@ public class ShopsTest {
     Faker faker = new Faker();
 
     @BeforeAll
-    @DisplayName("Установка системных переменных")
-    static void setBeforeAll() {
+    @DisplayName("Установка настроек")
+    static void setBeforeAll() throws MalformedURLException {
         System.setProperty("webdriver.chrome.driver", "C:\\Users\\asentsov\\IdeaProjects\\chromedriver.exe");
         System.setProperty("webdriver.http.factory", "jdk-http-client");
+        boolean isRemote = true;
+        if (isRemote) {
+            DesiredCapabilities capabilities = new DesiredCapabilities();
+            capabilities.setBrowserName("chrome");
+            capabilities.setCapability("enableVNC:", true);
+            WebDriver driver = new RemoteWebDriver(URI.create("http://localhost:4000").toURL(), capabilities);
+            setWebDriver(driver);
+        } else {
+            Configuration.browser = "firefox";
+        }
     }
     @BeforeEach
     @DisplayName("Открытие страницы")
